@@ -10,7 +10,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 """ Tests for _prony.py"""
-import pytest
 from ._prony import prony
 import numpy
 
@@ -18,8 +17,8 @@ import numpy
 def test_zeros():
     signal = numpy.zeros(10)
     amplitudes, phases = prony(signal)
-    assert (len(amplitudes) == 5)
-    assert (len(phases) == 5)
+    assert len(amplitudes) == 5
+    assert len(phases) == 5
     for j in range(5):
         numpy.testing.assert_allclose(amplitudes[j], 0)
         numpy.testing.assert_allclose(phases[j], 0)
@@ -33,8 +32,8 @@ def test_signal():
              0.05 * numpy.exp(1j * x_vec * 1.2))
     print(y_vec)
     amplitudes, phases = prony(y_vec)
-    assert (len(amplitudes) == 5)
-    assert (len(phases) == 5)
+    assert len(amplitudes) == 5
+    assert len(phases) == 5
     for a, p in zip(amplitudes, phases):
         print(a, numpy.angle(p))
     numpy.testing.assert_allclose(numpy.abs(amplitudes[0]), 0.5, atol=1e-6)
