@@ -102,6 +102,9 @@ from openfermion.circuits import (
     error_bound,
     error_operator,
     trotter_steps_required,
+    vpe_single_circuit,
+    vpe_circuits_single_timestep,
+    standard_vpe_rotation_set,
 )
 
 from openfermion.functionals import contextuality
@@ -215,6 +218,7 @@ from openfermion.measurements import (
     partition_iterator,
     pauli_string_iterator,
     PhaseFitEstimator,
+    get_phase_function,
 )
 
 from openfermion.ops import (

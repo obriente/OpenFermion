@@ -11,13 +11,13 @@
 #   limitations under the License.
 """Circuit generation functions for verified phase estimation (2010.02538)"""
 
-from typing import Tuple, Optional
+from typing import Sequence, Optional
 import numpy
 import cirq
 
 
 def vpe_single_circuit(
-        qubits: Tuple[cirq.Qid],
+        qubits: Sequence[cirq.Qid],
         prep: cirq.Circuit,
         evolve: cirq.Circuit,
         initial_rotation: cirq.Gate,
@@ -51,7 +51,7 @@ def vpe_single_circuit(
     return circuit
 
 
-standard_rotation_set = [
+standard_vpe_rotation_set = [
     [0.25, cirq.ry(numpy.pi / 2), cirq.ry(-numpy.pi / 2)],
     [-0.25, cirq.ry(numpy.pi / 2), cirq.ry(numpy.pi / 2)],
     [-0.25j, cirq.ry(numpy.pi / 2), cirq.rx(-numpy.pi / 2)],
@@ -64,11 +64,11 @@ standard_rotation_set = [
 
 
 def vpe_circuits_single_timestep(
-        qubits: Tuple[cirq.Qid],
+        qubits: Sequence[cirq.Qid],
         prep: cirq.Circuit,
         evolve: cirq.Circuit,
         target_qubit: cirq.Qid,
-        rotation_set: Optional[Tuple] = None) -> Tuple[cirq.Circuit]:
+        rotation_set: Optional[Sequence] = None) -> Sequence[cirq.Circuit]:
     """Prepares the circuits to perform VPE at a fixed time
 
     Puts together the set of pre- and post-rotations to implement
@@ -82,18 +82,18 @@ def vpe_circuits_single_timestep(
         evolve [cirq.Circuit] -- The circuit to evolve for time t
         target_qubit [cirq.Qid] -- The qubit on which the phase
             function is encoded
-        rotation_set [Tuple] -- A set of initial and final rotations for the
+        rotation_set [Sequence] -- A set of initial and final rotations for the
             target qubit. We average the phase function estimation over multiple
             such rotations to cancel out readout noise, final T1 decay, etc.
-            The standard rotation set is typically sufficient for these purposes.
-            The first element of each gate is the multiplier to get the phase
-            function; we do not need this for this function.
+            The standard rotation set is typically sufficient for these
+            purposes. The first element of each gate is the multiplier to get the
+            phase function; we do not need this for this function.
 
             If rotation_set is set to None, the 'standard rotation set' of all
             possible X and Y rotations before and after the circuit is used.
     """
     if rotation_set is None:
-        rotation_set = standard_rotation_set
+        rotation_set = standard_vpe_rotation_set
     circuits = [
         vpe_single_circuit(
             qubits, prep, evolve, rdata[1].on(target_qubit),

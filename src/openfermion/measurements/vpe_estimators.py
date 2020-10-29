@@ -18,6 +18,7 @@ import numpy
 import cirq
 
 from openfermion.linalg import fit_known_frequencies
+from openfermion.circuits import standard_vpe_rotation_set
 
 
 class _VPEEstimator(metaclass=abc.ABCMeta):
@@ -132,18 +133,6 @@ class PhaseFitEstimator(_VPEEstimator):
         return expectation_value
 
 
-standard_rotation_set = [
-    [0.25, cirq.ry(numpy.pi / 2), cirq.ry(-numpy.pi / 2)],
-    [-0.25, cirq.ry(numpy.pi / 2), cirq.ry(numpy.pi / 2)],
-    [-0.25j, cirq.ry(numpy.pi / 2), cirq.rx(-numpy.pi / 2)],
-    [0.25j, cirq.ry(numpy.pi / 2), cirq.rx(numpy.pi / 2)],
-    [0.25, cirq.rx(numpy.pi / 2), cirq.rx(-numpy.pi / 2)],
-    [-0.25, cirq.rx(numpy.pi / 2), cirq.rx(numpy.pi / 2)],
-    [0.25j, cirq.rx(numpy.pi / 2), cirq.ry(-numpy.pi / 2)],
-    [-0.25j, cirq.rx(numpy.pi / 2), cirq.ry(numpy.pi / 2)],
-]
-
-
 def get_phase_function(results: Sequence[cirq.TrialResult],
                        qubits: Sequence[cirq.Qid],
                        target_qid: int,
@@ -183,7 +172,7 @@ def get_phase_function(results: Sequence[cirq.TrialResult],
     """
     hs_index = 2**(len(qubits) - target_qid - 1)
     if rotation_set is None:
-        rotation_set = standard_rotation_set
+        rotation_set = standard_vpe_rotation_set
     phase_function = 0
     if len(results) != len(rotation_set):
         raise ValueError("I have an incorrect number of TrialResults "
