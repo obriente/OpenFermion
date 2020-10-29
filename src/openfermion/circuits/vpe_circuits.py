@@ -96,8 +96,8 @@ def vpe_circuits_single_timestep(
         rotation_set = standard_rotation_set
     circuits = [
         vpe_single_circuit(
-            qubits, prep, evolve, rgates[1].on(target_qubit),
-            rgates[2].on(target_qubit))
-        for rgates in rotation_set
+            qubits, prep, evolve, rdata[1].on(target_qubit),
+            rdata[2].on(target_qubit))
+        for rdata in rotation_set
     ]
     return circuits
