@@ -47,7 +47,7 @@ def vpe_single_circuit(
     circuit.append(evolve)
     circuit.append(cirq.inverse(prep))
     circuit.append(final_rotation)
-    circuit.append(cirq.measure(*qubits), key='msmt')
+    circuit.append(cirq.measure(*qubits, key='msmt'))
     return circuit
 
 
