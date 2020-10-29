@@ -125,25 +125,10 @@ class PhaseFitEstimator(_VPEEstimator):
             expectation_value [float] -- the estimated expectation value
         """
         amplitudes = self.get_amplitudes(phase_function)
-        expectation_value = numpy.dot(numpy.abs(amplitudes),
-                                      self.evals) / numpy.sum(
-                                          numpy.abs(amplitudes))
+        expectation_value = numpy.dot(
+            numpy.abs(amplitudes),
+            self.evals) / numpy.sum(numpy.abs(amplitudes))
         return expectation_value
-
-
-# disabling yapf here as its proposed formatting decreases readability
-# yapf: disable
-standard_rotation_set = [
-    [0.25, cirq.ry(numpy.pi / 2), cirq.ry(-numpy.pi / 2)],
-    [-0.25, cirq.ry(numpy.pi / 2), cirq.ry(numpy.pi / 2)],
-    [-0.25j, cirq.ry(numpy.pi / 2), cirq.rx(-numpy.pi / 2)],
-    [0.25j, cirq.ry(numpy.pi / 2), cirq.rx(numpy.pi / 2)],
-    [0.25, cirq.rx(numpy.pi / 2), cirq.rx(-numpy.pi / 2)],
-    [-0.25, cirq.rx(numpy.pi / 2), cirq.rx(numpy.pi / 2)],
-    [0.25j, cirq.rx(numpy.pi / 2), cirq.ry(-numpy.pi / 2)],
-    [-0.25j, cirq.rx(numpy.pi / 2), cirq.ry(numpy.pi / 2)],
-]
-# yapf: enable
 
 
 def get_phase_function(results: Sequence[cirq.TrialResult],
