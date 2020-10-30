@@ -64,4 +64,3 @@ def test_fitting_signal():
     assert len(amplitudes_guess == 3)
     for index in range(3):
         assert numpy.isclose(amplitudes_guess[index], amplitudes[index])
-
