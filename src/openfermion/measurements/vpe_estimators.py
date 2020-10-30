@@ -97,8 +97,7 @@ class PhaseFitEstimator(_VPEEstimator):
         times = numpy.linspace(0, maxtime, numsteps)
         return times
 
-    def get_amplitudes(self,
-                       phase_function: numpy.ndarray) -> numpy.ndarray:
+    def get_amplitudes(self, phase_function: numpy.ndarray) -> numpy.ndarray:
         """Fits the amplitudes in the phase function to the input signal data.
 
         Arguments:
@@ -111,8 +110,8 @@ class PhaseFitEstimator(_VPEEstimator):
         times = self.get_simulation_points()
         phase_function_shifted = numpy.array(phase_function) *\
             numpy.exp(1j * times * self.ref_eval)
-        amplitudes = fit_known_frequencies(
-            phase_function_shifted, times, self.evals)
+        amplitudes = fit_known_frequencies(phase_function_shifted, times,
+                                           self.evals)
         return amplitudes
 
     def get_expectation_value(self,
@@ -127,9 +126,9 @@ class PhaseFitEstimator(_VPEEstimator):
             expectation_value [float] -- the estimated expectation value
         """
         amplitudes = self.get_amplitudes(phase_function)
-        expectation_value = numpy.dot(
-            numpy.abs(amplitudes),
-            self.evals) / numpy.sum(numpy.abs(amplitudes))
+        expectation_value = numpy.dot(numpy.abs(amplitudes),
+                                      self.evals) / numpy.sum(
+                                          numpy.abs(amplitudes))
         return expectation_value
 
 
@@ -143,7 +142,7 @@ def get_phase_function(results: Sequence[cirq.TrialResult],
     that these measurements occur, we can estimate the phase function.
 
     Arguments:
-        measurements [Sequence[cirq.TrialResult]] -- A list of measurement results
+        measurements [Sequence[cirq.TrialResult]] -- A list of TrialResults
             from the different circuits to be run at each point. We assume that
             these circuits are correlated to the order of rotation_set, and the
             only difference should be the initial and final rotation (following)
