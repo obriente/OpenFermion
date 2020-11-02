@@ -75,7 +75,7 @@ class PhaseFitEstimator(_VPEEstimator):
         self.evals = evals
         self.ref_eval = ref_eval
 
-    def get_simulation_points(self) -> numpy.ndarray:
+    def get_simulation_points(self, safe=True) -> numpy.ndarray:
         """Generates time points for estimation
 
         VPE requires estimating the phase function g(t) at multiple points t,
@@ -91,8 +91,12 @@ class PhaseFitEstimator(_VPEEstimator):
         Returns:
             times: a set of times t that g(t) should be estimated at.
         """
-        numsteps = len(self.evals)
-        step_size = numpy.pi / (max(self.evals) - min(self.evals))
+        if safe:
+            numsteps = len(self.evals) * 2
+            step_size = numpy.pi / (max(self.evals) - min(self.evals))
+        else:
+            numsteps = len(self.evals)
+            step_size = numpy.pi / (max(self.evals) - min(self.evals))
         maxtime = step_size * (numsteps - 1)
         times = numpy.linspace(0, maxtime, numsteps)
         return times
