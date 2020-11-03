@@ -75,7 +75,7 @@ class PhaseFitEstimator(_VPEEstimator):
         self.evals = evals
         self.ref_eval = ref_eval
 
-    def get_simulation_points(self, safe=True) -> numpy.ndarray:
+    def get_simulation_points(self, safe: bool = True) -> numpy.ndarray:
         """Generates time points for estimation
 
         VPE requires estimating the phase function g(t) at multiple points t,
@@ -84,9 +84,18 @@ class PhaseFitEstimator(_VPEEstimator):
 
         In this case, we fit len(self.energies) complex amplitudes to a complex
         valued signal, we need precisely this number of points in the signal.
+
+        However, it appears numerically that approximately twice as many points
+        are needed to prevent aliasing, so we double this number here.
+
         Then, to prevent aliasing, we need to make sure that the time step
         dt < 2*pi / (E_max-E_min). Here, we choose dt = pi / (E_max-E_min).
         (Importantly, for Pauli operators this reproduces the H test.)
+
+        Args:
+            safe [bool, default True] -- numerical testing shows that taking
+                approximately twice as many points is better for the stability
+                of the estimator; this
 
         Returns:
             times: a set of times t that g(t) should be estimated at.
